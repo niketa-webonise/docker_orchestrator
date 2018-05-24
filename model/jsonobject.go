@@ -68,7 +68,7 @@ type SystemInfo struct {
 	Name        string `json:"name" bson:"name"`
 }
 
-type JsonObject struct {
+type Root struct {
 	ID         bson.ObjectId `json:"id" bson:"_id"`
 	SystemInfo SystemInfo    `json:"systemInfo" bson:"systemInfo"`
 	AuthDatas  []AuthData    `json:"authData" bson:"authData"`
@@ -76,7 +76,15 @@ type JsonObject struct {
 	Components []Component   `json:"components" bson:"components"`
 }
 
-func InsertJsonObject(jsonObject JsonObject) error {
+func InsertJsonObject(rootobject Root) error {
 	c := database.Collection()
-	return c.Insert(jsonObject)
+	return c.Insert(rootobject)
+}
+
+func GetDockerItem(rootobject Root) (Root, error) {
+
+	c := database.Collection()
+	err := c.FindId(rootobject.ID).One(&rootobject)
+	return rootobject, err
+
 }

@@ -6,9 +6,17 @@ import (
 	"github.com/niketa/docker_orchestrator/model"
 )
 
-func Unmarshaljs(bytevalue []byte) error {
+func UnmarshalJsInsert(bytevalue []byte) error {
 
-	var jsonObject model.JsonObject
-	json.Unmarshal(bytevalue, &jsonObject)
-	return model.InsertJsonObject(jsonObject)
+	var rootobject model.Root
+	json.Unmarshal(bytevalue, &rootobject)
+	return model.InsertJsonObject(rootobject)
+}
+
+func UnmarshalJsGetItem(bytevalue []byte) (model.Root, error) {
+
+	var rootobject model.Root
+	json.Unmarshal(bytevalue, &rootobject)
+	rootobject, err := model.GetDockerItem(rootobject)
+	return rootobject, err
 }

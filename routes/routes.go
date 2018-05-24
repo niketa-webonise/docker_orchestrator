@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -11,10 +12,7 @@ func CreateRoute() {
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/createJson", controllers.CreateJsonObject).Methods("POST")
-	err := http.ListenAndServe(":3500", r)
-	if err != nil {
-		//log.Fatal(err)
-	}
-
+	r.HandleFunc("/docker/config", controllers.DockerConfig).Methods("POST")
+	r.HandleFunc("/docker/config/{id}", controllers.GetDockerConfig).Methods("GET")
+	log.Fatal(http.ListenAndServe(":8585", r))
 }
